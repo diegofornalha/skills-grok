@@ -23,12 +23,13 @@ Whenever a **publishable folder on the Grok Bot box** is created or updated, mir
 | `/home/box/reference/` | `diegofornalha/box-grok-reference` |
 | `/home/box/start-ssh.sh` | `diegofornalha/box-grok-scripts` (file as `start-ssh.sh`) |
 | `/workspace/plugins-catalogo.txt`, `/workspace/claude-catalog-basico2.txt` | `diegofornalha/box-grok-workspace-notes` |
+| `/workspace/guimoo-mcp/` | `diegofornalha/box-grok-guimoo-mcp` (exclude `node_modules`, `.env`, battery dumps / live CRM validation with PII) |
 | `/home/box/agent-data/workflows/` (user skills) | **not this skill** — use Sync skill → skills-grok |
 
 Sibling (already separate): `diegofornalha/skills-grok`.
 
 ## Never publish here
-`sand-host`, `deps`, `sand-data`/`agent-data` secrets, `.ssh`, `.hermes`, `.claude`, `.config`, `.garmin-tokens`, `.cloudflared`, `chrome-profile`, `.env*`, media/binaries, backups, transcripts, third-party exports.
+`sand-host`, `deps`, `sand-data`/`agent-data` secrets, `.ssh`, `.hermes`, `.claude`, `.config`, `.garmin-tokens`, `.cloudflared`, `chrome-profile`, `.env*`, media/binaries, backups, transcripts, third-party exports, live CRM validation dumps with real contact data.
 
 ## How to push (no git clone)
 Prefer GitHub Contents API via `gh` (owner auth). Do **not** clone repos onto the box.
