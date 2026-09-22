@@ -2,40 +2,42 @@
 name: Simular fluxo no Leonas
 description: >-
   Use this when testing or validating a Leonas flow in the built-in Simulador
-  (local test without WhatsApp) — open the flow editor, run the dialogue as the
-  customer, cover branches, and report gaps.
+  (local, no WhatsApp): always reset first, start with oi, walk the full path,
+  and document stuck phases for Manutenção.
 ---
 # Simular fluxo no Leonas
 
 Assumes signed-in Chrome on `app.leonasolutions.io`. Use the browser only for the Simulador UI (no WhatsApp send).
 
 ## Inputs
-- `{flow_url}` — editor URL, e.g. `https://app.leonasolutions.io/flows/{id}/edit` (or open from Fluxos)
-- `{start_message}` — optional first client message to type (demo used `oi`; empty + Enter also starts some flows)
-- `{branches_to_cover}` — list of paths to walk (e.g. Disponible, No disponible, negociar, USDT, plegable)
+- `{flow_url}` — editor URL, e.g. `https://app.leonasolutions.io/flows/{id}/edit`
+- `{start_message}` — first client message; default `oi`
+- `{branches_to_cover}` — paths to walk (e.g. Disponible, No disponible, plegable, negociar, USDT)
 - `{expected_copy}` — optional checklist of Spanish texts / nodes that must appear
 
-## Steps
-1. Open `{flow_url}` in the flow editor. Confirm the flow name and that the canvas loaded.
-2. If the Simulador pane is closed, click **▶ Simular** (top-left of the canvas). The pane title is like "Simulador: Teste local, sem WhatsApp…".
-3. Click the bottom input (`Digite para começar...` or later `Digite a resposta do cliente...`).
-4. Start the run: type `{start_message}` and press Enter, or press Enter empty if that starts the flow. Confirm "Fluxo iniciado." and the first bot message. On the canvas, active nodes highlight green and the view may pan to follow them.
-5. If the Simulador closes unexpectedly after a keypress, click **▶ Simular** again and continue from the input.
-6. Reply as the customer for each wait state. Prefer labeled menu buttons when the flow offers them; otherwise type free-text answers. After each reply, check:
-   - bot copy (language, product name, tone)
-   - which canvas node is active (green)
-   - that the conversation does not dead-end early
-7. Walk every path in `{branches_to_cover}`. Restart the Simulador (close/reopen **▶ Simular** or restart the test) when you need a clean run for another branch.
-8. Optional: use **Simular timeout (sem resposta)** only when validating timeout behavior.
-9. Stop when all requested branches are covered or a blocker appears (login wall, missing node, wrong product, dead end).
+## Every run (mandatory)
+1. Open `{flow_url}` and confirm the canvas loaded.
+2. **Reset the Simulador before every simulation** (including routine runs and re-runs after a branch):
+   - If a previous test is open, close the Simulador pane (X) or clear the run so the pane shows "Envie uma mensagem para começar o teste" / "Digite para começar...".
+   - Reopen with **▶ Simular** if needed.
+   - Do not continue an old conversation; always start from a clean Simulador.
+3. Type `{start_message}` (default `oi`) and send. Confirm "Fluxo iniciado." and the first bot message. Canvas nodes highlight green as the flow advances.
+4. If the Simulador closes unexpectedly, click **▶ Simular** again, reset if needed, and restart from `oi`.
+5. Walk the **full** intended path(s) in `{branches_to_cover}` as the customer until each path ends or hits a clear dead end. Prefer menu button labels; otherwise type free text. After each reply check language, product name, active node, and fluidity (no stuck wait with no next step).
+6. For a new branch, **reset again** and start from `oi` — never mix branches in one dirty run.
+7. Also validate: if the client would send image or audio, the bot must answer in **text** (flag if the flow has no textual reply path for media).
+8. Optional: **Simular timeout (sem resposta)** only when checking timeout behavior.
 
-## Report back
-- Branches tested and pass/fail
-- Exact bot messages that mismatched `{expected_copy}` (or surprising text)
-- Dead ends, missing questions, wrong product/model, or broken conditionals
-- Whether USDT / negotiation / unavailable paths behaved as specified
-- Do **not** send WhatsApp messages or publish the flow; this is local Simulador only
+## Report (document for Manutenção)
+Post a clear analysis the Manutenção agent can act on:
+- Branches run (each from a fresh reset + `oi`) and pass/fail
+- Where it is **not fluid** — phase/node where the dialogue stalls or confuses
+- Exact bot messages that are wrong, missing, or mismatched vs `{expected_copy}`
+- Media case: image/audio → text reply present or missing
+- Concrete suggestion of what to change (node / copy / conditional)
+- Tag Manutenção when reporting gaps; stay quiet on routine runs only if everything stayed fluid and complete
+- Do **not** send WhatsApp or publish the flow
 
 ## Notes
-- Prefer stable UI targets: **▶ Simular**, Simulador input, menu option labels, canvas node titles — not coordinates.
-- Do not embed credentials; login state lives in the browser profile.
+- Prefer stable UI targets: **▶ Simular**, Simulador input, menu labels, node titles — not coordinates.
+- Do not embed credentials; login lives in the browser profile.
