@@ -1,9 +1,9 @@
 ---
 name: Disparar fluxo iPhone no Leonas
 description: >-
-  Use this when starting or accompanying a real iPhone seller conversation in
-  Leonas chats — clear list filters, open a contact, and trigger the Iphone flow
-  (not CCC).
+  Use this when working Leonas live chats for the iPhone price campaign — clear
+  filters, trigger Iphone on sellers, mark off-topic chats Resolvido, evaluate
+  replies.
 ---
 # Disparar fluxo iPhone no Leonas
 
@@ -11,40 +11,57 @@ Assumes signed in to Leonas in the box browser as Empresa Agentes Grok.
 
 ## Goal
 
-Open a seller chat on Live Chats and trigger the **Iphone** flow so the bot asks for the cash price of the iPhone 17. Then watch the real replies to compare price and behavior.
+Open seller chats on Live Chats, trigger the **Iphone** flow for phone/iPhone sellers, archive off-topic chats as **Resolvido**, and watch real replies to compare price and behavior.
 
 ## Inputs
 
-- `{contato}` — seller name or phone as shown in the list (examples: `Inverfin SAECA`, `Alemania Cell`, or a `+595…` number that later resolves to a name)
+- `{contato}` — seller name or phone as shown in the list (examples: `Alemania Cell`, `Rodriphone`, or a `+595…` number that later resolves to a name)
 - `{fluxo}` — flow to trigger (default: `Iphone`)
 
 ## Steps
 
 1. Open `https://app.leonasolutions.io/chats` (Chats ao vivo). Prefer a single Leonas tab.
-2. In the middle list, stay on the status tab that holds the chat (**Aguardando**, **Atendendo**, or **Resolvidos** as needed).
-3. **Always clear the unread filter.** If the chip **Não lidas** is active, click the x / switch so **Tudo** is selected. With **Não lidas** on, the list often shows “Nenhum chat encontrado” and hides the sellers you need.
-4. Find `{contato}` in the list (name or phone preview; last message may be “Buen dia !” / “buen dia !”). Click it to open the thread on the right. The label may flip from `+595…` to the display name a few seconds after open.
-5. In the chat header actions, click the rocket / flow icon (**Disparar fluxo**).
-6. In the Disparar fluxo panel, open the flow picker. The list may include other flows such as **CCC - Renovação** and **Setup Inicial Grok Bot — Diagnóstico**. Select only **`{fluxo}`** (default **Iphone**) — click that named row; do not pick CCC or other flows.
-7. Click purple **Ativar** without asking for confirmation when Diego has already approved a batch run / “só rode”.
-8. Success checks:
-   - Green toast: **Fluxo disparado com sucesso!**
-   - Bot message appears in the thread asking for the precio al contado del iPhone 17.
-   - Contact may jump in the list and the name may resolve if it was only a phone number.
-9. Stay on the chat and report incoming seller replies (price, availability, negotiation, USDT, etc.) without inventing content.
+2. In the middle list, work mainly under **Aguardando** / **Atendendo**.
+3. **Always clear the unread filter.** If **Não lidas** is active, clear it so **Tudo** is selected.
+4. Open a contact. Classify the thread:
+   - **iPhone / celular seller** → keep and (if needed) trigger the flow below.
+   - **Not about iPhone** (e.g. tráfego pago, marketing, unrelated pitch) → **archive as Resolvido** (see Archive) and do not trigger Iphone.
+5. For iPhone sellers without the bot price question yet: click the rocket / flow icon (**Disparar fluxo**).
+6. In the panel, select only **`{fluxo}`** (default **Iphone**). The list may also show **CCC - Renovação** and **Setup Inicial Grok Bot — Diagnóstico** — never pick those for this campaign. Typing `iphone` in the search is optional.
+7. Click purple **Ativar** without asking when Diego already approved a batch / “só rode”.
+8. Success checks for trigger:
+   - Toast **Fluxo disparado com sucesso!**
+   - Bot asks for precio al contado del iPhone 17.
+9. Watch replies (price in guarani, availability, negotiation, USDT, voice notes if transcribable). Report without inventing.
 
-## Batch (when Diego says run for all sellers)
+## Archive off-topic (Resolvido)
 
-Repeat steps 4–8 for each seller chat in the list. Skip system chats (e.g. **Avisos Leona Flow**). If the iPhone price question is already in the thread, skip that contact.
+When the open chat is clearly **not** about iPhone/celular:
+
+1. In the chat header actions, click the **checkmark in a circle** (resolve).
+2. Success: toast **Chat resolvido com sucesso**; status becomes **Resolvido por Agentes Grok**; the chat leaves **Aguardando**.
+3. Do not send free messages; do not trigger Iphone on that contact.
+
+Example from teaching: **Junior Rezende Trafego** (paid traffic / Instagram) → Resolvido.
+
+## Batch round
+
+1. List who already has the Iphone bot question.
+2. Identify new iPhone sellers → Disparar Iphone.
+3. Off-topic chats → Resolvido.
+4. Evaluate replies on already-triggered threads.
+5. Tell Diego only when something useful happened; stay quiet if nothing new.
 
 ## Do not
 
 - Leave **Não lidas** on when hunting for chats.
-- Select **CCC - Renovação** or any flow other than **Iphone** for this campaign.
-- Edit the flow graph from this skill (that is the Criar Fluxo Iphone / simulator lane).
-- Send free-typed messages unless Diego asked for a specific reply.
+- Select **CCC - Renovação** or any non-Iphone flow for this campaign.
+- Trigger Iphone on off-topic chats instead of Resolvido.
+- Edit the flow graph from this skill (that is manutenção Fluxo Iphone / simulador).
+- Send free-typed messages unless Diego asked.
 
 ## Notes
 
 - Contact labels can flip between phone and display name after open or after Ativar.
-- Flow editor URL for the iPhone flow is separate (`/flows/126172/edit`); this skill only uses **Chats ao vivo**.
+- After Resolvido, the **Aguardando** list may look empty for that filter — switch tabs or clear filters to continue.
+- Flow editor: `https://app.leonasolutions.io/flows/126172/edit` (separate from this chats skill).
